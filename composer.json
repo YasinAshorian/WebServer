@@ -1,0 +1,10 @@
+{
+    "name": "yasinashourian/web-server",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Yasinashourian\\WebServer\\": "src/"
+        }
+    },
+    "require": {}
+}

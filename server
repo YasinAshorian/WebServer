@@ -1,0 +1,18 @@
+#!/usr/bin/env php
+<?php
+
+use Yasinashourian\WebServer\webserver\Request;
+use Yasinashourian\WebServer\webserver\Response;
+use Yasinashourian\WebServer\webserver\Server;
+
+require_once __DIR__. DIRECTORY_SEPARATOR . "vendor/autoload.php";
+
+array_shift($argv);
+
+$port = empty($argv) ? 80 : array_shift($argv);
+
+$server = new Server('127.0.0.1', $port);
+
+$server->listen(function (Request $request) {
+   return new Response('Hello World :)');
+});
