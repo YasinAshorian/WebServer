@@ -21,24 +21,36 @@ $port = empty($argv) ? 80 : array_shift($argv);
  |  create new server
  | --------------------------------------
 */
-$server = new Server('127.0.0.1', $port);
+try {
+
+    $server = new Server('127.0.0.1', $port);
+
+} catch (Exception $e) {
+
+    throw new Exception($e->getMessage());
+}
 
 
 /* -------------------------------------
  |  start listening
  |-------------------------------------
 */
-$server->listen(function (Request $request) {
+try {
+    $server->listen(function (Request $request) {
 
-   /*--------------------------------------------
-    | print information that we recived the request
-    | ----------------------------------------------
-   */
-   echo $request->method() . ' ' . $request->uri() . "\n";
+        /*--------------------------------------------
+         | print information that we received the request
+         | ----------------------------------------------
+        */
+        echo $request->method() . ' ' . $request->uri() . "\n";
 
-   /*----------------------------------------------------
-    | return a response containing the request informatio
-    |------------------------------------------------------
-    */
-   return new Response('<pre>' . print_r($request, true) . '</pre>');
-});
+        /*----------------------------------------------------
+         | return a response containing the request information
+         |------------------------------------------------------
+         */
+        return new Response( '<pre>'.print_r( $request, true ).'</pre>' );
+    });
+} catch (Exception $e) {
+
+    throw new Exception($e->getMessage());
+}

@@ -10,6 +10,7 @@ class Response
      * @var array
      */
     protected static $statusCodes = [
+
         // Informational 1xx
         100 => 'Continue',
         101 => 'Switching Protocols',
@@ -30,6 +31,7 @@ class Response
         303 => 'See Other',
         304 => 'Not Modified',
         305 => 'Use Proxy',
+
         // 306 is deprecated but reserved
         307 => 'Temporary Redirect',
 
@@ -87,20 +89,17 @@ class Response
     /**
      * Construct a new Response object
      *
-     * @param string 		$body
-     * @param int 			$status
+     * @param string $body
+     * @param int  $status
      * @return void
      */
-    public function __construct( $body, $status = null )
+    public function __construct(string $body, int $status = null )
     {
-        if ( !is_null( $status ) )
-        {
-            $this->status = $status;
-        }
+        !is_null($status) ?? $this->status = $status;
 
         $this->body = $body;
 
-        // set inital headers
+        /* set initial headers */
         $this->header( 'Date', gmdate( 'D, d M Y H:i:s T' ) );
         $this->header( 'Content-Type', 'text/html; charset=utf-8' );
         $this->header( 'Server', 'PHPServer' );
@@ -111,7 +110,7 @@ class Response
      *
      * @return string
      */
-    public function body()
+    public function body(): string
     {
         return $this->body;
     }
@@ -119,22 +118,54 @@ class Response
     /**
      * Add or overwrite an header parameter header
      *
-     * @param string 			$key
-     * @param string 			$value
+     * @param string $key
+     * @param string $value
      * @return void
      */
-    public function header( $key, $value )
+    public function header(string $key, string $value)
     {
         $this->headers[ucfirst($key)] = $value;
     }
+
     /**
      * Returns a simple response based on a status code
      *
-     * @param int			$status
+     * @param int $status
      * @return Response
      */
-    public static function error($status)
+    public static function error(int $status): Response
     {
         return new static( "<h1>PHPServer: ".$status." - ".static::$statusCodes[$status]."</h1>", $status );
+    }
+
+    /**
+     * Build a header string based on the current object
+     *
+     * @return string
+     */
+    public function buildHeaderString(): string
+    {
+        $lines = [];
+
+        /* response status */
+        $lines[] = "HTTP/1.1 ".$this->status." ".static::$statusCodes[$this->status];
+
+        /* add the headers */
+        foreach($this->headers as $key => $value)
+        {
+            $lines[] = $key.": ".$value;
+        }
+
+        return implode( " \r\n", $lines )."\r\n\r\n";
+    }
+
+    /**
+     * Create a string out of the response data
+     *
+     * @return string
+     */
+    public function __toString()
+    {
+        return $this->buildHeaderString().$this->body();
     }
 }

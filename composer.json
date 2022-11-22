@@ -6,5 +6,7 @@
             "Yasinashourian\\WebServer\\": "src/"
         }
     },
-    "require": {}
+    "require": {
+        "ext-sockets": "*"
+    }
 }
