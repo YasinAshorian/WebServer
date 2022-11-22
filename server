@@ -12,7 +12,7 @@ require_once __DIR__. DIRECTORY_SEPARATOR . "vendor/autoload.php";
  | If the port is entered, its value is taken into account, otherwise it is 80 by default
  |---------------------------------------------------------------------------------------
 */
-
+var_dump($argv);die();
 array_shift($argv);
 
 $port = empty($argv) ? 80 : array_shift($argv);
