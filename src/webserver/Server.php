@@ -5,20 +5,48 @@ namespace Yasinashourian\WebServer\webserver;
 
 class Server
 {
-
+    /**
+     * The current host ! for Example : 127.0.0.1
+     *
+     * @var string
+     */
     protected $host;
 
+    /**
+     * The current port ! for Example 8000
+     *
+     * @var int
+     */
     protected $port;
 
+    /**
+     * The binded socket
+     *
+     * @var resource
+     */
     protected $socket;
 
+    /**
+     *  Construct new Server instance
+     *
+     * @param string $host
+     * @param int $port
+     * @throws \Exception
+     */
     public function __construct($host, $port)
     {
         $this->host = $host;
         $this->port = (int) $port;
 
+        /* ---------------------------------
+        | create a socket
+        |-----------------------------------
+        */
         $this->createSocket();
-
+        /*--------------------------------------
+        | bind the socket
+        |---------------------------------------
+        */
         $this->bindSocket();
     }
 

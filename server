@@ -7,12 +7,38 @@ use Yasinashourian\WebServer\webserver\Server;
 
 require_once __DIR__. DIRECTORY_SEPARATOR . "vendor/autoload.php";
 
+
+/*---------------------------------------------------------------------------------------
+ | If the port is entered, its value is taken into account, otherwise it is 80 by default
+ |---------------------------------------------------------------------------------------
+*/
+
 array_shift($argv);
 
 $port = empty($argv) ? 80 : array_shift($argv);
 
+/*--------------------------------------
+ |  create new server
+ | --------------------------------------
+*/
 $server = new Server('127.0.0.1', $port);
 
+
+/* -------------------------------------
+ |  start listening
+ |-------------------------------------
+*/
 $server->listen(function (Request $request) {
-   return new Response('Hello World :)');
+
+   /*--------------------------------------------
+    | print information that we recived the request
+    | ----------------------------------------------
+   */
+   echo $request->method() . ' ' . $request->uri() . "\n";
+
+   /*----------------------------------------------------
+    | return a response containing the request informatio
+    |------------------------------------------------------
+    */
+   return new Response('<pre>' . print_r($request, true) . '</pre>');
 });
